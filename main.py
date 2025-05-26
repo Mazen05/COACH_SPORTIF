@@ -1,51 +1,60 @@
-
-from fastapi import FastAPI
-from pydantic import BaseModel
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
 import joblib
 import pandas as pd
+from pydantic import BaseModel
 
-# Initialisation de l'application
 app = FastAPI()
 
-# Chargement des modèles
-model_reco = joblib.load("model_reco.pkl")
-model_perf = joblib.load("model_perf.pkl")
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-# Définition des schémas de données pour Pydantic
+# Static & templates
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
 
+# Accueil
+@app.get("/", response_class=HTMLResponse)
+def home(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+# Schéma des données
 class UserProfile(BaseModel):
     age: int
     sexe: str
-    poids: float
-    taille: float
+    poids: int
+    taille: int
     objectif: str
     historique_sportif: str
 
-class PerformanceInput(BaseModel):
-    nb_squats: int
-    nb_bench_press: int
-    heures_sommeil: float
-    qualité_nutrition: int
-
-# Endpoint de prédiction de programme d'entraînement
 @app.post("/predict_program")
 def predict_program(data: UserProfile):
     df = pd.DataFrame([data.dict()])
-    # Encodage à adapter selon ton pipeline réel
+
     encodage = {
-        "sexe": {"H": 0, "F": 1},
+        "sexe": {"M": 0, "F": 1},
         "objectif": {"perte de poids": 0, "prise de muscle": 1, "endurance": 2},
         "historique_sportif": {"débutant": 0, "intermédiaire": 1, "avancé": 2}
     }
+
     for col, mapping in encodage.items():
         df[col] = df[col].map(mapping)
-    prediction = model_reco.predict(df)[0]
-    mapping_inverse = {0: "cardio", 1: "musculation", 2: "HIIT"}
-    return {"programme_recommandé": mapping_inverse.get(prediction, "inconnu")}
 
-# Endpoint de prédiction de performance future
-@app.post("/predict_progress")
-def predict_progress(data: PerformanceInput):
-    df = pd.DataFrame([data.dict()])
-    prediction = model_perf.predict(df)[0]
-    return {"progression_estimée": round(prediction, 2)}
+    model = joblib.load("model_reco.pkl")
+    pred = model.predict(df)[0]
+
+    programme_labels = {
+        0: "cardio",
+        1: "HIIT",
+        2: "musculation"
+    }
+    return {"programme_recommandé": programme_labels.get(int(pred), "Inconnu")}
