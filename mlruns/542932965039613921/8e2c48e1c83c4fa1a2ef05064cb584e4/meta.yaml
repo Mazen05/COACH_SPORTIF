@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/mazen/Downloads/COACH_SPORTIF/mlruns/542932965039613921/8e2c48e1c83c4fa1a2ef05064cb584e4/artifacts
+end_time: 1748268375861
+entry_point_name: ''
+experiment_id: '542932965039613921'
+lifecycle_stage: active
+run_id: 8e2c48e1c83c4fa1a2ef05064cb584e4
+run_name: KNN - Recommandation
+run_uuid: 8e2c48e1c83c4fa1a2ef05064cb584e4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1748268368555
+status: 3
+tags: []
+user_id: mazen
