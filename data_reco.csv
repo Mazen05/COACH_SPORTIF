@@ -1,0 +1,301 @@
+age,sexe,poids,taille,objectif,historique_sportif,programme_recommandé
+56,H,60,159,endurance,débutant,cardio
+46,F,78,166,endurance,avancé,musculation
+32,H,85,169,perte de poids,avancé,cardio
+25,H,74,173,endurance,avancé,HIIT
+38,F,70,154,perte de poids,intermédiaire,HIIT
+56,H,85,183,perte de poids,intermédiaire,HIIT
+36,F,59,155,perte de poids,avancé,musculation
+40,H,86,151,endurance,avancé,musculation
+28,F,58,162,perte de poids,intermédiaire,HIIT
+28,H,73,192,prise de muscle,intermédiaire,cardio
+41,F,84,192,endurance,débutant,musculation
+53,H,98,197,endurance,débutant,HIIT
+57,F,84,160,endurance,intermédiaire,HIIT
+41,H,97,196,endurance,avancé,musculation
+20,F,85,172,prise de muscle,avancé,musculation
+39,F,67,165,endurance,avancé,musculation
+19,F,98,180,endurance,avancé,cardio
+41,H,88,160,perte de poids,débutant,cardio
+47,F,81,165,endurance,intermédiaire,HIIT
+55,H,73,157,prise de muscle,avancé,musculation
+19,F,72,153,prise de muscle,débutant,cardio
+38,H,81,189,prise de muscle,avancé,musculation
+50,F,86,153,prise de muscle,intermédiaire,HIIT
+29,H,61,174,endurance,débutant,cardio
+39,H,98,152,endurance,intermédiaire,cardio
+42,F,62,181,prise de muscle,intermédiaire,cardio
+44,H,72,152,prise de muscle,débutant,HIIT
+59,H,74,176,endurance,débutant,musculation
+45,F,84,178,prise de muscle,débutant,cardio
+33,H,90,181,perte de poids,débutant,HIIT
+32,H,79,199,prise de muscle,débutant,musculation
+20,H,66,168,prise de muscle,débutant,HIIT
+54,F,98,170,perte de poids,débutant,musculation
+24,H,69,154,perte de poids,avancé,HIIT
+38,F,97,167,endurance,intermédiaire,musculation
+26,H,74,177,endurance,débutant,cardio
+56,H,71,191,perte de poids,avancé,musculation
+35,H,62,171,perte de poids,avancé,HIIT
+21,F,68,170,endurance,avancé,HIIT
+42,H,98,155,prise de muscle,intermédiaire,musculation
+31,H,85,150,perte de poids,débutant,cardio
+26,F,61,154,endurance,avancé,cardio
+43,H,90,190,prise de muscle,intermédiaire,musculation
+19,F,68,161,perte de poids,intermédiaire,musculation
+37,F,61,175,prise de muscle,intermédiaire,HIIT
+45,H,58,195,endurance,avancé,cardio
+24,F,56,183,perte de poids,débutant,musculation
+25,H,77,198,prise de muscle,avancé,cardio
+52,F,63,163,perte de poids,avancé,musculation
+31,F,80,175,prise de muscle,débutant,musculation
+34,H,68,194,endurance,débutant,cardio
+53,F,96,176,endurance,débutant,musculation
+57,F,65,158,perte de poids,intermédiaire,musculation
+21,F,54,175,prise de muscle,débutant,HIIT
+19,F,84,196,perte de poids,avancé,musculation
+23,F,61,171,perte de poids,débutant,musculation
+59,H,74,196,prise de muscle,avancé,musculation
+21,F,70,179,prise de muscle,intermédiaire,HIIT
+46,H,85,192,prise de muscle,avancé,cardio
+35,F,72,197,endurance,avancé,HIIT
+43,H,65,166,perte de poids,débutant,HIIT
+51,H,88,175,perte de poids,débutant,cardio
+27,F,94,185,endurance,avancé,HIIT
+53,F,91,150,prise de muscle,débutant,cardio
+31,F,88,157,endurance,intermédiaire,HIIT
+48,H,63,198,endurance,intermédiaire,cardio
+32,F,80,184,endurance,débutant,musculation
+25,H,54,164,perte de poids,intermédiaire,HIIT
+31,H,84,196,endurance,débutant,HIIT
+40,H,72,171,perte de poids,avancé,HIIT
+57,F,78,163,perte de poids,avancé,HIIT
+38,F,92,175,perte de poids,intermédiaire,musculation
+33,H,60,177,prise de muscle,débutant,HIIT
+35,H,67,172,perte de poids,débutant,musculation
+41,F,96,163,perte de poids,intermédiaire,musculation
+43,H,61,173,prise de muscle,avancé,musculation
+42,F,58,151,perte de poids,intermédiaire,musculation
+58,H,59,194,endurance,avancé,cardio
+46,F,93,175,endurance,débutant,cardio
+32,H,66,163,perte de poids,avancé,HIIT
+18,F,87,156,prise de muscle,intermédiaire,cardio
+42,H,56,152,endurance,débutant,cardio
+24,F,95,196,prise de muscle,intermédiaire,HIIT
+26,F,62,172,prise de muscle,intermédiaire,HIIT
+41,H,89,195,endurance,avancé,HIIT
+18,H,91,192,prise de muscle,intermédiaire,cardio
+25,F,58,196,endurance,avancé,cardio
+41,H,99,194,prise de muscle,débutant,HIIT
+28,F,76,167,endurance,avancé,musculation
+34,H,51,187,perte de poids,débutant,HIIT
+25,F,54,184,endurance,avancé,musculation
+52,F,78,164,endurance,intermédiaire,musculation
+52,F,86,174,endurance,avancé,HIIT
+50,F,87,186,endurance,avancé,HIIT
+22,F,68,177,prise de muscle,débutant,HIIT
+59,F,57,159,perte de poids,intermédiaire,cardio
+56,H,97,188,endurance,avancé,musculation
+58,H,94,166,prise de muscle,intermédiaire,cardio
+45,H,50,188,perte de poids,avancé,cardio
+24,F,71,171,perte de poids,avancé,HIIT
+26,F,66,175,perte de poids,intermédiaire,cardio
+25,F,56,193,perte de poids,avancé,HIIT
+29,F,74,174,endurance,intermédiaire,musculation
+51,H,94,166,endurance,avancé,HIIT
+50,H,53,162,prise de muscle,débutant,cardio
+40,F,85,169,prise de muscle,intermédiaire,cardio
+41,H,55,174,prise de muscle,avancé,HIIT
+54,H,80,153,perte de poids,avancé,HIIT
+52,F,68,159,perte de poids,débutant,cardio
+57,H,93,152,endurance,intermédiaire,musculation
+39,F,88,190,perte de poids,avancé,musculation
+44,H,76,194,perte de poids,débutant,HIIT
+52,F,59,167,perte de poids,avancé,musculation
+18,F,75,196,prise de muscle,intermédiaire,cardio
+52,F,68,185,prise de muscle,avancé,HIIT
+54,F,88,196,endurance,avancé,cardio
+31,H,52,171,perte de poids,avancé,cardio
+20,F,94,183,perte de poids,avancé,musculation
+18,F,62,196,endurance,débutant,HIIT
+22,F,99,157,perte de poids,débutant,HIIT
+43,H,77,189,perte de poids,intermédiaire,musculation
+31,F,69,198,prise de muscle,débutant,cardio
+56,H,77,193,endurance,débutant,cardio
+44,F,57,168,endurance,intermédiaire,cardio
+26,H,90,191,endurance,débutant,cardio
+32,H,88,190,endurance,débutant,HIIT
+32,F,50,186,prise de muscle,intermédiaire,HIIT
+43,H,52,155,prise de muscle,intermédiaire,musculation
+59,F,62,175,perte de poids,intermédiaire,musculation
+30,F,77,183,perte de poids,avancé,HIIT
+49,F,98,194,perte de poids,avancé,HIIT
+56,H,74,155,perte de poids,intermédiaire,cardio
+49,H,82,186,prise de muscle,intermédiaire,cardio
+21,F,87,182,endurance,intermédiaire,musculation
+47,F,55,171,prise de muscle,avancé,HIIT
+54,H,93,170,perte de poids,avancé,musculation
+40,F,94,155,prise de muscle,débutant,HIIT
+56,F,81,155,endurance,débutant,cardio
+32,F,94,197,endurance,intermédiaire,musculation
+46,H,96,153,prise de muscle,avancé,musculation
+53,H,70,179,prise de muscle,avancé,HIIT
+30,H,65,160,prise de muscle,avancé,cardio
+49,F,70,179,perte de poids,intermédiaire,musculation
+24,F,60,180,prise de muscle,débutant,cardio
+39,F,86,173,prise de muscle,intermédiaire,musculation
+45,H,85,158,prise de muscle,débutant,cardio
+19,F,84,152,endurance,débutant,HIIT
+59,F,68,180,endurance,intermédiaire,musculation
+23,F,69,189,perte de poids,débutant,musculation
+45,F,67,186,perte de poids,débutant,cardio
+45,H,96,185,endurance,avancé,cardio
+37,H,90,173,endurance,débutant,musculation
+47,F,98,180,endurance,intermédiaire,HIIT
+28,H,63,155,prise de muscle,intermédiaire,cardio
+45,H,64,151,prise de muscle,débutant,cardio
+42,F,80,169,endurance,avancé,cardio
+56,F,50,177,prise de muscle,avancé,musculation
+50,H,52,160,prise de muscle,débutant,musculation
+18,F,65,153,perte de poids,débutant,musculation
+44,H,72,164,endurance,intermédiaire,musculation
+30,F,60,155,endurance,débutant,HIIT
+58,H,61,198,prise de muscle,avancé,HIIT
+20,F,59,179,endurance,débutant,musculation
+56,H,81,187,perte de poids,intermédiaire,HIIT
+23,H,65,151,perte de poids,intermédiaire,cardio
+25,H,57,164,perte de poids,intermédiaire,cardio
+44,F,87,160,endurance,intermédiaire,cardio
+26,H,61,157,endurance,intermédiaire,musculation
+54,H,73,175,endurance,débutant,cardio
+50,F,77,194,endurance,débutant,HIIT
+59,F,57,193,endurance,débutant,musculation
+41,H,77,154,perte de poids,débutant,HIIT
+32,H,85,155,prise de muscle,intermédiaire,cardio
+49,F,75,175,perte de poids,avancé,cardio
+49,F,57,153,endurance,débutant,cardio
+41,F,99,168,perte de poids,avancé,musculation
+58,F,77,169,endurance,débutant,HIIT
+29,F,77,182,endurance,débutant,musculation
+56,H,86,169,perte de poids,avancé,musculation
+19,F,90,198,endurance,intermédiaire,cardio
+20,H,85,161,prise de muscle,débutant,musculation
+54,H,76,196,endurance,débutant,musculation
+34,H,66,150,prise de muscle,débutant,cardio
+19,F,58,175,prise de muscle,avancé,musculation
+19,H,82,163,endurance,intermédiaire,cardio
+45,H,69,187,perte de poids,avancé,cardio
+40,F,62,186,prise de muscle,avancé,cardio
+54,H,77,160,perte de poids,intermédiaire,cardio
+49,H,97,185,prise de muscle,avancé,musculation
+50,F,78,162,endurance,intermédiaire,cardio
+18,H,62,192,endurance,débutant,cardio
+36,H,95,152,prise de muscle,intermédiaire,musculation
+19,H,84,182,endurance,débutant,musculation
+43,F,55,155,prise de muscle,avancé,HIIT
+49,F,67,199,endurance,avancé,musculation
+23,F,54,159,perte de poids,débutant,musculation
+49,H,96,154,endurance,avancé,HIIT
+21,H,74,172,perte de poids,intermédiaire,musculation
+28,F,51,159,endurance,débutant,musculation
+34,H,59,193,perte de poids,avancé,musculation
+55,H,79,151,endurance,débutant,musculation
+41,F,99,162,perte de poids,intermédiaire,HIIT
+22,F,94,189,prise de muscle,intermédiaire,musculation
+51,H,54,151,prise de muscle,avancé,musculation
+23,H,82,169,perte de poids,intermédiaire,HIIT
+39,H,50,150,endurance,débutant,cardio
+28,F,67,186,perte de poids,intermédiaire,HIIT
+33,F,81,158,endurance,débutant,cardio
+50,F,96,166,prise de muscle,débutant,HIIT
+26,F,98,158,endurance,intermédiaire,HIIT
+23,H,60,160,prise de muscle,avancé,musculation
+33,F,70,164,endurance,intermédiaire,cardio
+46,F,75,173,endurance,débutant,musculation
+20,F,74,187,endurance,débutant,cardio
+37,F,71,184,perte de poids,intermédiaire,HIIT
+53,F,76,179,perte de poids,avancé,HIIT
+36,H,98,180,prise de muscle,avancé,cardio
+43,H,62,198,prise de muscle,débutant,musculation
+20,F,82,154,perte de poids,débutant,musculation
+36,H,83,193,prise de muscle,avancé,musculation
+37,F,90,199,perte de poids,intermédiaire,musculation
+49,F,84,163,endurance,débutant,HIIT
+24,H,50,160,prise de muscle,débutant,HIIT
+58,H,70,158,prise de muscle,avancé,HIIT
+50,F,97,183,perte de poids,intermédiaire,HIIT
+57,F,55,161,prise de muscle,avancé,HIIT
+56,F,77,184,prise de muscle,intermédiaire,musculation
+35,H,66,184,endurance,intermédiaire,musculation
+57,F,54,150,prise de muscle,intermédiaire,musculation
+18,F,80,189,endurance,débutant,musculation
+28,F,54,171,perte de poids,avancé,HIIT
+45,H,87,178,prise de muscle,avancé,HIIT
+42,F,52,157,endurance,intermédiaire,HIIT
+40,F,72,160,perte de poids,débutant,cardio
+48,H,86,190,prise de muscle,débutant,musculation
+47,F,86,186,perte de poids,avancé,musculation
+59,F,59,163,prise de muscle,débutant,HIIT
+52,H,59,179,perte de poids,débutant,musculation
+24,F,68,184,perte de poids,intermédiaire,musculation
+33,H,66,170,endurance,débutant,HIIT
+43,H,70,186,perte de poids,intermédiaire,cardio
+19,F,63,154,prise de muscle,avancé,cardio
+18,F,58,168,prise de muscle,débutant,cardio
+29,F,95,163,endurance,avancé,HIIT
+22,F,50,175,prise de muscle,avancé,musculation
+54,H,94,153,prise de muscle,débutant,HIIT
+49,F,62,174,prise de muscle,débutant,HIIT
+26,H,53,194,perte de poids,avancé,musculation
+58,F,50,191,perte de poids,débutant,cardio
+52,F,98,174,prise de muscle,intermédiaire,cardio
+36,F,89,167,endurance,intermédiaire,HIIT
+33,H,81,189,perte de poids,débutant,cardio
+20,F,83,157,endurance,avancé,HIIT
+37,F,77,188,prise de muscle,débutant,HIIT
+41,F,80,189,prise de muscle,débutant,musculation
+50,F,57,163,perte de poids,avancé,musculation
+41,H,88,181,prise de muscle,avancé,musculation
+28,F,75,187,perte de poids,intermédiaire,HIIT
+25,H,83,182,prise de muscle,avancé,musculation
+53,H,52,172,prise de muscle,intermédiaire,cardio
+55,H,99,164,perte de poids,avancé,cardio
+57,H,61,182,perte de poids,débutant,HIIT
+37,H,50,174,perte de poids,intermédiaire,HIIT
+52,H,93,166,prise de muscle,intermédiaire,musculation
+42,F,54,182,prise de muscle,intermédiaire,HIIT
+52,H,79,196,endurance,débutant,HIIT
+42,H,79,151,perte de poids,débutant,cardio
+46,H,66,163,prise de muscle,débutant,cardio
+35,F,97,189,prise de muscle,débutant,musculation
+35,F,96,189,perte de poids,débutant,HIIT
+19,H,72,188,endurance,intermédiaire,HIIT
+52,F,64,155,perte de poids,débutant,cardio
+33,H,86,155,endurance,intermédiaire,HIIT
+58,H,70,152,prise de muscle,débutant,cardio
+53,F,63,156,endurance,avancé,musculation
+50,H,51,157,prise de muscle,intermédiaire,cardio
+21,F,60,191,perte de poids,avancé,HIIT
+50,F,88,164,perte de poids,intermédiaire,musculation
+31,H,87,196,perte de poids,avancé,cardio
+38,H,83,178,endurance,débutant,cardio
+37,F,87,182,prise de muscle,débutant,musculation
+25,H,99,179,perte de poids,débutant,musculation
+24,H,83,188,perte de poids,intermédiaire,cardio
+20,H,67,176,prise de muscle,avancé,HIIT
+34,F,79,185,perte de poids,débutant,cardio
+50,F,64,178,prise de muscle,avancé,musculation
+29,H,76,187,prise de muscle,avancé,cardio
+39,F,83,182,prise de muscle,débutant,musculation
+39,F,87,186,prise de muscle,débutant,musculation
+47,F,82,176,prise de muscle,avancé,HIIT
+55,F,73,182,endurance,débutant,musculation
+55,F,64,153,perte de poids,débutant,musculation
+25,H,79,171,endurance,débutant,HIIT
+44,H,91,151,perte de poids,intermédiaire,musculation
+44,H,66,159,endurance,avancé,HIIT
+51,F,54,154,prise de muscle,avancé,HIIT
+38,F,78,159,perte de poids,intermédiaire,musculation
+47,H,53,182,perte de poids,avancé,musculation
+50,F,59,187,endurance,débutant,cardio
+45,H,66,162,endurance,avancé,HIIT
