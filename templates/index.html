@@ -6,8 +6,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f8f8f8;
-      margin: 0;
+      background: #f1f1f1;
       padding: 40px;
     }
 
@@ -17,7 +16,7 @@
       margin: auto;
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0px 0px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
     h2 {
@@ -42,8 +41,20 @@
 
     #result {
       margin-top: 20px;
-      font-weight: bold;
+      padding: 10px;
       text-align: center;
+      font-weight: bold;
+      border-radius: 8px;
+    }
+
+    .success {
+      background-color: #e6ffed;
+      color: #117733;
+    }
+
+    .error {
+      background-color: #ffe6e6;
+      color: #cc0000;
     }
   </style>
 </head>
@@ -89,7 +100,6 @@
   <script>
     document.getElementById("form").addEventListener("submit", async (e) => {
       e.preventDefault();
-
       const data = {
         age: parseInt(document.getElementById("age").value),
         sexe: document.getElementById("sexe").value,
@@ -98,6 +108,8 @@
         objectif: document.getElementById("objectif").value,
         historique_sportif: document.getElementById("historique_sportif").value
       };
+
+      const resultDiv = document.getElementById("result");
 
       try {
         const response = await fetch("/predict_program", {
@@ -111,16 +123,18 @@
         const result = await response.json();
 
         if (response.ok) {
-          document.getElementById("result").innerHTML =
-            `🏋️ <strong>Programme recommandé :</strong> ${result.programme_recommandé}`;
+          resultDiv.className = "success";
+          resultDiv.innerHTML = `🏋️ <strong>Programme recommandé :</strong> ${result.programme}<br><br>
+            <ul style="text-align:left;">` +
+            result.exercices.map(ex => `<li>${ex}</li>`).join("") +
+            `</ul>`;
         } else {
-          document.getElementById("result").innerHTML =
-            `❌ <strong>Erreur API :</strong> ${JSON.stringify(result)}`;
+          resultDiv.className = "error";
+          resultDiv.innerHTML = `❌ <strong>Erreur API :</strong> ${JSON.stringify(result)}`;
         }
       } catch (error) {
-        document.getElementById("result").innerHTML =
-          "❌ <strong>Erreur inattendue :</strong> Failed to fetch";
-        console.error(error);
+        resultDiv.className = "error";
+        resultDiv.innerHTML = `❌ <strong>Erreur inattendue :</strong> ${error}`;
       }
     });
   </script>

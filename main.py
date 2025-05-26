@@ -3,13 +3,13 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
-import joblib
-import pandas as pd
 from pydantic import BaseModel
+import pandas as pd
+import joblib
 
 app = FastAPI()
 
-# CORS
+# Middleware CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -18,16 +18,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Static & templates
+# Dossiers templates et static
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-# Accueil
+# Page d'accueil
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-# Schéma des données
+
+# Données reçues du formulaire
 class UserProfile(BaseModel):
     age: int
     sexe: str
@@ -36,10 +37,20 @@ class UserProfile(BaseModel):
     objectif: str
     historique_sportif: str
 
+
+# Mapping des recommandations
+programme_details = {
+    "cardio": ["Tapis de course", "Vélo", "Burpees", "Jumping jacks", "Montées de genoux"],
+    "HIIT": ["Squat jumps", "Pompes", "Gainage", "Fentes sautées", "Mountain climbers"],
+    "musculation": ["Développé couché", "Soulevé de terre", "Squat barre", "Rowing haltères", "Tractions"]
+}
+
+# Endpoint de prédiction
 @app.post("/predict_program")
 def predict_program(data: UserProfile):
     df = pd.DataFrame([data.dict()])
 
+    # Encodage
     encodage = {
         "sexe": {"M": 0, "F": 1},
         "objectif": {"perte de poids": 0, "prise de muscle": 1, "endurance": 2},
@@ -50,11 +61,17 @@ def predict_program(data: UserProfile):
         df[col] = df[col].map(mapping)
 
     model = joblib.load("model_reco.pkl")
-    pred = model.predict(df)[0]
+    pred_code = int(model.predict(df)[0])
 
-    programme_labels = {
+    code_to_label = {
         0: "cardio",
         1: "HIIT",
         2: "musculation"
     }
-    return {"programme_recommandé": programme_labels.get(int(pred), "Inconnu")}
+    label = code_to_label.get(pred_code, "inconnu")
+    details = programme_details.get(label, [])
+
+    return {
+        "programme": label,
+        "exercices": details
+    }
