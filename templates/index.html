@@ -6,17 +6,18 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f1f1f1;
+      background: #f4f4f4;
+      margin: 0;
       padding: 40px;
     }
 
     .container {
       background: white;
-      max-width: 500px;
+      max-width: 600px;
       margin: auto;
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     }
 
     h2 {
@@ -39,66 +40,71 @@
       width: 100%;
     }
 
-    #result {
+    .result {
       margin-top: 20px;
-      padding: 10px;
-      text-align: center;
       font-weight: bold;
-      border-radius: 8px;
+      text-align: center;
     }
 
     .success {
-      background-color: #e6ffed;
-      color: #117733;
+      background-color: #e1fbe1;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
     }
 
     .error {
-      background-color: #ffe6e6;
-      color: #cc0000;
+      background-color: #fdeaea;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 15px;
+      color: darkred;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Programme personnalisé</h2>
-    <form id="form">
-      <label for="age">Âge :</label>
-      <input type="number" id="age" required>
-
-      <label for="sexe">Sexe :</label>
+    <form id="program-form">
+      <label>Âge :</label><input type="number" id="age" required>
+      <label>Sexe :</label>
       <select id="sexe" required>
         <option value="M">Homme</option>
         <option value="F">Femme</option>
       </select>
-
-      <label for="poids">Poids (kg) :</label>
-      <input type="number" id="poids" required>
-
-      <label for="taille">Taille (cm) :</label>
-      <input type="number" id="taille" required>
-
-      <label for="objectif">Objectif :</label>
+      <label>Poids (kg) :</label><input type="number" id="poids" required>
+      <label>Taille (cm) :</label><input type="number" id="taille" required>
+      <label>Objectif :</label>
       <select id="objectif" required>
         <option value="perte de poids">Perte de poids</option>
         <option value="prise de muscle">Prise de muscle</option>
         <option value="endurance">Endurance</option>
       </select>
-
-      <label for="historique_sportif">Niveau :</label>
+      <label>Niveau :</label>
       <select id="historique_sportif" required>
         <option value="débutant">Débutant</option>
         <option value="intermédiaire">Intermédiaire</option>
         <option value="avancé">Avancé</option>
       </select>
-
       <button type="submit">Obtenir mon programme</button>
     </form>
+    <div id="program-result" class="result"></div>
+  </div>
 
-    <div id="result"></div>
+  <div class="container">
+    <h2>Estimation de la performance</h2>
+    <form id="perf-form">
+      <label>Squats :</label><input type="number" id="nb_squats" required>
+      <label>Développé couché :</label><input type="number" id="nb_bench_press" required>
+      <label>Heures de sommeil :</label><input type="number" step="0.1" id="heures_sommeil" required>
+      <label>Qualité de la nutrition (0-100) :</label><input type="number" step="0.1" id="qualité_nutrition" required>
+      <button type="submit">Estimer ma progression</button>
+    </form>
+    <div id="perf-result" class="result"></div>
   </div>
 
   <script>
-    document.getElementById("form").addEventListener("submit", async (e) => {
+    document.getElementById("program-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const data = {
         age: parseInt(document.getElementById("age").value),
@@ -108,33 +114,52 @@
         objectif: document.getElementById("objectif").value,
         historique_sportif: document.getElementById("historique_sportif").value
       };
-
-      const resultDiv = document.getElementById("result");
-
       try {
-        const response = await fetch("/predict_program", {
+        const res = await fetch("/predict_program", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
         });
-
-        const result = await response.json();
-
-        if (response.ok) {
-          resultDiv.className = "success";
-          resultDiv.innerHTML = `🏋️ <strong>Programme recommandé :</strong> ${result.programme}<br><br>
-            <ul style="text-align:left;">` +
-            result.exercices.map(ex => `<li>${ex}</li>`).join("") +
-            `</ul>`;
+        const result = await res.json();
+        if (res.ok) {
+          document.getElementById("program-result").innerHTML = `
+            <div class="success">
+              🏋️ <strong>Programme recommandé :</strong> ${result.programme_recommandé}
+              <ul>${result.exercices.map(e => `<li>${e}</li>`).join("")}</ul>
+            </div>`;
         } else {
-          resultDiv.className = "error";
-          resultDiv.innerHTML = `❌ <strong>Erreur API :</strong> ${JSON.stringify(result)}`;
+          document.getElementById("program-result").innerHTML = `<div class="error">❌ ${JSON.stringify(result)}</div>`;
         }
-      } catch (error) {
-        resultDiv.className = "error";
-        resultDiv.innerHTML = `❌ <strong>Erreur inattendue :</strong> ${error}`;
+      } catch (err) {
+        document.getElementById("program-result").innerHTML = `<div class="error">❌ Erreur inattendue</div>`;
+      }
+    });
+
+    document.getElementById("perf-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const data = {
+        nb_squats: parseFloat(document.getElementById("nb_squats").value),
+        nb_bench_press: parseFloat(document.getElementById("nb_bench_press").value),
+        heures_sommeil: parseFloat(document.getElementById("heures_sommeil").value),
+        qualité_nutrition: parseFloat(document.getElementById("qualité_nutrition").value)
+      };
+      try {
+        const res = await fetch("/predict_performance", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (res.ok) {
+          document.getElementById("perf-result").innerHTML = `
+            <div class="success">
+              📈 <strong>Progression estimée :</strong> ${result.progression_future} reps/charge
+            </div>`;
+        } else {
+          document.getElementById("perf-result").innerHTML = `<div class="error">❌ ${JSON.stringify(result)}</div>`;
+        }
+      } catch (err) {
+        document.getElementById("perf-result").innerHTML = `<div class="error">❌ Erreur inattendue</div>`;
       }
     });
   </script>

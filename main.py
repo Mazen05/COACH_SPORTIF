@@ -4,12 +4,12 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import pandas as pd
 import joblib
+import pandas as pd
 
 app = FastAPI()
 
-# Middleware CORS
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -18,17 +18,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Dossiers templates et static
+# Static + templates
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-# Page d'accueil
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-
-# Données reçues du formulaire
+# Modèle pour la reco programme
 class UserProfile(BaseModel):
     age: int
     sexe: str
@@ -37,20 +35,17 @@ class UserProfile(BaseModel):
     objectif: str
     historique_sportif: str
 
+# Modèle pour la performance
+class PerfProfile(BaseModel):
+    nb_squats: float
+    nb_bench_press: float
+    heures_sommeil: float
+    qualité_nutrition: float
 
-# Mapping des recommandations
-programme_details = {
-    "cardio": ["Tapis de course", "Vélo", "Burpees", "Jumping jacks", "Montées de genoux"],
-    "HIIT": ["Squat jumps", "Pompes", "Gainage", "Fentes sautées", "Mountain climbers"],
-    "musculation": ["Développé couché", "Soulevé de terre", "Squat barre", "Rowing haltères", "Tractions"]
-}
-
-# Endpoint de prédiction
 @app.post("/predict_program")
 def predict_program(data: UserProfile):
     df = pd.DataFrame([data.dict()])
 
-    # Encodage
     encodage = {
         "sexe": {"M": 0, "F": 1},
         "objectif": {"perte de poids": 0, "prise de muscle": 1, "endurance": 2},
@@ -63,15 +58,18 @@ def predict_program(data: UserProfile):
     model = joblib.load("model_reco.pkl")
     pred_code = int(model.predict(df)[0])
 
-    code_to_label = {
-        0: "cardio",
-        1: "HIIT",
-        2: "musculation"
+    programme_labels = {
+        0: ("cardio", ["Tapis de course", "Vélo", "Burpees", "Jumping jacks", "Montées de genoux"]),
+        1: ("HIIT", ["Sprints", "Squats sautés", "Pompes explosives", "Fentes sautées"]),
+        2: ("musculation", ["Squats", "Développé couché", "Soulevé de terre", "Tractions"])
     }
-    label = code_to_label.get(pred_code, "inconnu")
-    details = programme_details.get(label, [])
 
-    return {
-        "programme": label,
-        "exercices": details
-    }
+    label, details = programme_labels.get(pred_code, ("Inconnu", []))
+    return {"programme_recommandé": label, "exercices": details}
+
+@app.post("/predict_performance")
+def predict_performance(data: PerfProfile):
+    df = pd.DataFrame([data.dict()])
+    model_perf = joblib.load("model_perf.pkl")
+    prediction = model_perf.predict(df)[0]
+    return {"progression_future": round(prediction, 2)}
