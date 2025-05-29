@@ -1,12 +1,12 @@
 from fastapi.testclient import TestClient
-from main import app
+from app import app
 
 client = TestClient(app)
 
 def test_predict_program():
     payload = {
         "age": 22,
-        "sexe": "M",  # ⚠️ bien mettre "sexe" (et pas "sex")
+        "sexe": "M",
         "poids": 70,
         "taille": 180,
         "objectif": "endurance",
