@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from main import app  # ✅ on importe depuis main.py qui contient l'objet `app`
+from app import app
 
 client = TestClient(app)
 
@@ -17,7 +17,8 @@ def test_predict_program():
     result = response.json()
     assert "programme_recommandé" in result
     assert "details" in result
-    assert isinstance(result["details"], list)
+    assert "exercices" in result["details"]
+    assert isinstance(result["details"]["exercices"], list)
 
 def test_predict_performance():
     payload = {
