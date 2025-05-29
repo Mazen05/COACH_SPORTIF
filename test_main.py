@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
-from app import app
+from app import app as fastapi_app 
 
-client = TestClient(app)
+client = TestClient(fastapi_app)
 
 def test_predict_program():
     payload = {
