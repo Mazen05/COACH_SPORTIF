@@ -5,6 +5,8 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 import joblib
 import pandas as pd
+from fastapi import FastAPI
+app = FastAPI()
 
 # Schémas de données
 class UserProfile(BaseModel):
