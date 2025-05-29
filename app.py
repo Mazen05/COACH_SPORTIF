@@ -61,3 +61,4 @@ def define_routes(app: FastAPI):
         model = joblib.load("model_perf.pkl")
         progression = float(model.predict(df)[0])
         return {"progression_estimee": round(progression, 2)}
+define_routes(app)
