@@ -6,3 +6,4 @@ xgboost
 joblib
 httpx
 pytest
+jinja2
