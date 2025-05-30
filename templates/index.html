@@ -1,167 +1,86 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Coach Sportif Intelligent</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      margin: 0;
-      padding: 40px;
-    }
+    <title>Coach Sportif Intelligent</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('/static/background.jpg'); 
+            background-size: cover;
+            background-position: center;
+            min-height: 100vh;
+            color: white;
+        }
 
-    .container {
-      background: white;
-      max-width: 600px;
-      margin: auto;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
+        .form-section {
+            background: rgba(0, 0, 0, 0.75);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
 
-    h2 {
-      text-align: center;
-    }
+        .btn-primary {
+            background-color: #0097A7;
+            border-color: #0097A7;
+        }
 
-    label, input, select {
-      display: block;
-      margin-bottom: 15px;
-      width: 100%;
-    }
+        .btn-primary:hover {
+            background-color: #007c91;
+        }
 
-    button {
-      background-color: #007bff;
-      color: white;
-      padding: 12px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    .result {
-      margin-top: 20px;
-      font-weight: bold;
-      text-align: center;
-    }
-
-    .success {
-      background-color: #e1fbe1;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 15px;
-    }
-
-    .error {
-      background-color: #fdeaea;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 15px;
-      color: darkred;
-    }
-  </style>
+        .result-box {
+            background: rgba(0, 0, 0, 0.75);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Programme personnalisé</h2>
-    <form id="program-form">
-      <label>Âge :</label><input type="number" id="age" required>
-      <label>Sexe :</label>
-      <select id="sexe" required>
-        <option value="M">Homme</option>
-        <option value="F">Femme</option>
-      </select>
-      <label>Poids (kg) :</label><input type="number" id="poids" required>
-      <label>Taille (cm) :</label><input type="number" id="taille" required>
-      <label>Objectif :</label>
-      <select id="objectif" required>
-        <option value="perte de poids">Perte de poids</option>
-        <option value="prise de muscle">Prise de muscle</option>
-        <option value="endurance">Endurance</option>
-      </select>
-      <label>Niveau :</label>
-      <select id="historique_sportif" required>
-        <option value="débutant">Débutant</option>
-        <option value="intermédiaire">Intermédiaire</option>
-        <option value="avancé">Avancé</option>
-      </select>
-      <button type="submit">Obtenir mon programme</button>
-    </form>
-    <div id="program-result" class="result"></div>
-  </div>
+<div class="container py-5">
+    <div class="form-section">
+        <h4>Génération du programme</h4>
+        <form action="/predict_program" method="post">
+            <input class="form-control mb-2" type="number" name="age" placeholder="Âge" required>
+            <input class="form-control mb-2" type="text" name="sexe" placeholder="Sexe (M/F)" required>
+            <input class="form-control mb-2" type="number" name="poids" placeholder="Poids (kg)" required>
+            <input class="form-control mb-2" type="number" name="taille" placeholder="Taille (cm)" required>
+            <select class="form-control mb-2" name="objectif" required>
+                <option>Perte de poids</option>
+                <option>Prise de muscle</option>
+                <option>Endurance</option>
+            </select>
+            <select class="form-control mb-3" name="historique_sportif" required>
+                <option>Débutant</option>
+                <option>Intermédiaire</option>
+                <option>Avancé</option>
+            </select>
+            <button class="btn btn-primary w-100" type="submit">Obtenir mon programme</button>
+        </form>
+        {% if programme and programme[0] %}
+        <div class="mt-3">
+            <p><strong>🏋️‍♂️ {{ programme[0] }}</strong></p>
+            <p>{{ exercices | join(', ') }}</p>
+        </div>
+        {% endif %}
+    </div>
 
-  <div class="container">
-    <h2>Estimation de la performance</h2>
-    <form id="perf-form">
-      <label>Squats :</label><input type="number" id="nb_squats" required>
-      <label>Développé couché :</label><input type="number" id="nb_bench_press" required>
-      <label>Heures de sommeil :</label><input type="number" step="0.1" id="heures_sommeil" required>
-      <label>Qualité de la nutrition (0-100) :</label><input type="number" step="0.1" id="qualité_nutrition" required>
-      <button type="submit">Estimer ma progression</button>
-    </form>
-    <div id="perf-result" class="result"></div>
-  </div>
-
-  <script>
-    document.getElementById("program-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const data = {
-        age: parseInt(document.getElementById("age").value),
-        sexe: document.getElementById("sexe").value,
-        poids: parseInt(document.getElementById("poids").value),
-        taille: parseInt(document.getElementById("taille").value),
-        objectif: document.getElementById("objectif").value,
-        historique_sportif: document.getElementById("historique_sportif").value
-      };
-      try {
-        const res = await fetch("/predict_program", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
-        const result = await res.json();
-        if (res.ok) {
-          document.getElementById("program-result").innerHTML = `
-            <div class="success">
-              🏋️ <strong>Programme recommandé :</strong> ${result.programme_recommandé}
-              <ul>${result.exercices.map(e => `<li>${e}</li>`).join("")}</ul>
-            </div>`;
-        } else {
-          document.getElementById("program-result").innerHTML = `<div class="error">❌ ${JSON.stringify(result)}</div>`;
-        }
-      } catch (err) {
-        document.getElementById("program-result").innerHTML = `<div class="error">❌ Erreur inattendue</div>`;
-      }
-    });
-
-    document.getElementById("perf-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const data = {
-        nb_squats: parseFloat(document.getElementById("nb_squats").value),
-        nb_bench_press: parseFloat(document.getElementById("nb_bench_press").value),
-        heures_sommeil: parseFloat(document.getElementById("heures_sommeil").value),
-        qualité_nutrition: parseFloat(document.getElementById("qualité_nutrition").value)
-      };
-      try {
-        const res = await fetch("/predict_performance", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
-        const result = await res.json();
-        if (res.ok) {
-          document.getElementById("perf-result").innerHTML = `
-            <div class="success">
-              📈 <strong>Progression estimée :</strong> ${result.progression_future} reps/charge
-            </div>`;
-        } else {
-          document.getElementById("perf-result").innerHTML = `<div class="error">❌ ${JSON.stringify(result)}</div>`;
-        }
-      } catch (err) {
-        document.getElementById("perf-result").innerHTML = `<div class="error">❌ Erreur inattendue</div>`;
-      }
-    });
-  </script>
+    <div class="form-section">
+        <h4>Estimation de la performance</h4>
+        <form action="/predict_performance" method="post">
+            <input class="form-control mb-2" type="number" name="nb_squats" placeholder="Squats" required>
+            <input class="form-control mb-2" type="number" name="nb_bench_press" placeholder="Développé couché" required>
+            <input class="form-control mb-2" type="number" name="heures_sommeil" placeholder="Heures de sommeil" required>
+            <input class="form-control mb-3" type="number" name="qualité_nutrition" placeholder="Qualité nutrition (0-100)" required>
+            <button class="btn btn-primary w-100" type="submit">Estimer ma progression</button>
+        </form>
+        {% if prediction %}
+        <div class="result-box">
+            <strong>📈 Progression estimée :</strong> {{ prediction }} reps/charge
+        </div>
+        {% endif %}
+    </div>
+</div>
 </body>
 </html>

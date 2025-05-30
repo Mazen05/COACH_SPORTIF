@@ -1,64 +1,98 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from pydantic import BaseModel
-import joblib
 import pandas as pd
-from fastapi import FastAPI
+import joblib
+
 app = FastAPI()
 
-# Schémas de données
-class UserProfile(BaseModel):
-    age: int
-    sexe: str
-    poids: int
-    taille: int
-    objectif: str
-    historique_sportif: str
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
 
-class PerformanceInput(BaseModel):
-    nb_squats: int
-    nb_bench_press: int
-    heures_sommeil: float
-    qualité_nutrition: float
+# Charger les modèles
+model_perf = joblib.load("model_perf.pkl")
+model_reco = joblib.load("model_reco.pkl")
 
-def define_routes(app: FastAPI):
+@app.get("/predict_program", response_class=HTMLResponse)
+def form_page(request: Request):
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "programme": None,
+        "exercices": [],
+        "prediction": None
+    })
 
-    app.mount("/static", StaticFiles(directory="static"), name="static")
-    templates = Jinja2Templates(directory="templates")
+@app.post("/predict_program", response_class=HTMLResponse)
+async def predict_program(
+    request: Request,
+    age: int = Form(...),
+    sexe: str = Form(...),
+    poids: float = Form(...),
+    taille: float = Form(...),
+    objectif: str = Form(...),
+    historique_sportif: str = Form(...)
+):
+    # Encodage manuel
+    sexe_encoded = 0 if sexe.upper() == "M" else 1
+    objectif_map = {"Perte de poids": 0, "Prise de muscle": 1, "Endurance": 2}
+    niveau_map = {"Débutant": 0, "Intermédiaire": 1, "Avancé": 2}
 
-    @app.get("/", response_class=HTMLResponse)
-    def home(request: Request):
-        return templates.TemplateResponse("index.html", {"request": request})
+    input_data = {
+        "age": age,
+        "sexe": sexe_encoded,
+        "poids": poids,
+        "taille": taille,
+        "objectif": objectif_map.get(objectif, 0),
+        "historique_sportif": niveau_map.get(historique_sportif, 0)
+    }
 
-    @app.post("/predict_program")
-    def predict_program(data: UserProfile):
-        df = pd.DataFrame([data.dict()])
+    df = pd.DataFrame([input_data])
+    prediction = int(model_reco.predict(df)[0])  # s'assurer que c'est bien un int
 
-        encodage = {
-            "sexe": {"M": 0, "F": 1},
-            "objectif": {"perte de poids": 0, "prise de muscle": 1, "endurance": 2},
-            "historique_sportif": {"débutant": 0, "intermédiaire": 1, "avancé": 2}
-        }
-        for col, mapping in encodage.items():
-            df[col] = df[col].map(mapping)
+    # Mapping des codes vers le type de programme
+    programme_mapping = {
+        0: "prise de muscle",
+        1: "perte de poids",
+        2: "endurance"
+    }
 
-        model = joblib.load("model_reco.pkl")
-        pred_code = int(model.predict(df)[0])
+    recommandations = {
+        'prise de muscle': ["Développé couché", "Squat barre", "Soulevé de terre", "Rowing", "Tractions"],
+        'perte de poids': ["HIIT", "Mountain climbers", "Burpees", "Sauts", "Gainage"],
+        'endurance': ["Course", "Rameur", "Burpees", "Corde à sauter"]
+    }
 
-        programme_labels = {
-            0: ("cardio", ["Tapis de course", "Vélo", "Burpees", "Jumping jacks", "Montées de genoux"]),
-            1: ("HIIT", ["Pompes", "Squats", "Gainage", "Burpees", "Fentes"]),
-            2: ("musculation", ["Développé couché", "Squat barre", "Soulevé de terre", "Rowing", "Tractions"])
-        }
-        label, exercices = programme_labels.get(pred_code, ("Inconnu", []))
-        return {"programme_recommandé": label, "details": {"exercices": exercices}}
+    programme_label = programme_mapping.get(prediction, "Programme inconnu")
+    exercices = recommandations.get(programme_label, ["Programme non reconnu"])
 
-    @app.post("/predict_performance")
-    def predict_performance(data: PerformanceInput):
-        df = pd.DataFrame([data.dict()])
-        model = joblib.load("model_perf.pkl")
-        progression = float(model.predict(df)[0])
-        return {"progression_estimee": round(progression, 2)}
-define_routes(app)
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "programme": [f"[ {prediction} ]"],
+        "exercices": exercices,
+        "prediction": None
+    })
+
+@app.post("/predict_performance", response_class=HTMLResponse)
+async def predict_performance(
+    request: Request,
+    nb_squats: float = Form(...),
+    nb_bench_press: float = Form(...),
+    heures_sommeil: float = Form(...),
+    qualité_nutrition: float = Form(...)
+):
+    data = {
+        "nb_squats": nb_squats,
+        "nb_bench_press": nb_bench_press,
+        "heures_sommeil": heures_sommeil,
+        "qualité_nutrition": qualité_nutrition
+    }
+    df = pd.DataFrame([data])
+    prediction = model_perf.predict(df)[0]
+
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "prediction": round(prediction, 2),
+        "programme": None,
+        "exercices": []
+    })
