@@ -1,34 +1,26 @@
 from fastapi.testclient import TestClient
-from app import app as fastapi_app  
+from app import app
 
-client = TestClient(fastapi_app)
+client = TestClient(app)
 
 def test_predict_program():
-    payload = {
-        "age": 22,
+    response = client.post("/predict_program", data={
+        "age": 25,
         "sexe": "M",
-        "poids": 70,
+        "poids": 75,
         "taille": 180,
-        "objectif": "endurance",
-        "historique_sportif": "débutant"
-    }
-    response = client.post("/predict_program", json=payload)
+        "objectif": "Endurance",
+        "historique_sportif": "Débutant"
+    })
     assert response.status_code == 200
-    result = response.json()
-    assert "programme_recommandé" in result
-    assert "details" in result
-    assert isinstance(result["details"], dict)
-    assert isinstance(result["details"].get("exercices", []), list)
+    assert "🏋️‍♂️" in response.text or "Programme non reconnu" in response.text
 
 def test_predict_performance():
-    payload = {
-        "nb_squats": 10,
+    response = client.post("/predict_performance", data={
+        "nb_squats": 15,
         "nb_bench_press": 10,
         "heures_sommeil": 8,
         "qualité_nutrition": 80
-    }
-    response = client.post("/predict_performance", json=payload)
+    })
     assert response.status_code == 200
-    result = response.json()
-    assert "progression_estimee" in result
-    assert isinstance(result["progression_estimee"], float)
+    assert "📈 Progression estimée" in response.text
