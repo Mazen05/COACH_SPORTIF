@@ -1,4 +1,3 @@
-
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
@@ -11,55 +10,91 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-model = joblib.load("model.pkl")
+# Charger les modèles
+model_perf = joblib.load("model_perf.pkl")
+model_reco = joblib.load("model_reco.pkl")
 
-@app.get("/", response_class=HTMLResponse)
-async def read_root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/predict_program", response_class=HTMLResponse)
+def form_page(request: Request):
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "programme": None,
+        "exercices": [],
+        "prediction": None
+    })
+
 
 @app.post("/predict_program", response_class=HTMLResponse)
 async def predict_program(
     request: Request,
     age: int = Form(...),
     sexe: str = Form(...),
+    poids: float = Form(...),
+    taille: float = Form(...),
     objectif: str = Form(...),
     historique_sportif: str = Form(...)
 ):
-    try:
-        df = pd.DataFrame([{
-            "age": age,
-            "sexe": sexe,
-            "objectif": objectif,
-            "historique_sportif": historique_sportif
-        }])
+    # Encodage manuel
+    sexe_encoded = 0 if sexe.upper() == "M" else 1
+    objectif_map = {"Perte de poids": 0, "Prise de muscle": 1, "Endurance": 2}
+    niveau_map = {"Débutant": 0, "Intermédiaire": 1, "Avancé": 2}
 
-        # Mise en forme pour éviter les NaN dus à des erreurs de casse
-        df["objectif"] = df["objectif"].str.lower()
-        df["historique_sportif"] = df["historique_sportif"].str.lower()
-        df["sexe"] = df["sexe"].str.upper()
+    input_data = {
+        "age": age,
+        "sexe": sexe_encoded,
+        "poids": poids,
+        "taille": taille,
+        "objectif": objectif_map.get(objectif, 0),
+        "historique_sportif": niveau_map.get(historique_sportif, 0)
+    }
 
-        # Encodage
-        encodage = {
-            "sexe": {"M": 0, "F": 1},
-            "objectif": {"perte de poids": 0, "prise de muscle": 1, "endurance": 2},
-            "historique_sportif": {"débutant": 0, "intermédiaire": 1, "avancé": 2}
-        }
-        for col, mapping in encodage.items():
-            df[col] = df[col].map(mapping)
+    df = pd.DataFrame([input_data])
+    prediction = model_reco.predict(df)[0]
 
-        # Vérifie l'absence de NaN après encodage
-        if df.isnull().values.any():
-            raise ValueError("Les données contiennent des valeurs non reconnues.")
+    label_map = {
+        0: "perte de poids",
+        1: "prise de muscle",
+        2: "endurance"
+    }
 
-        pred_code = int(model.predict(df)[0])
+    recommandations = {
+        "prise de muscle": ["Développé couché", "Squat barre", "Soulevé de terre", "Rowing", "Tractions"],
+        "perte de poids": ["HIIT", "Mountain climbers", "Burpees", "Sauts", "Gainage"],
+        "endurance": ["Course", "Rameur", "Burpees", "Corde à sauter"]
+    }
 
-        programmes = {
-            0: "Programme Perte de poids :\n- 30 min de cardio\n- Circuit training\n- 15 min de HIIT",
-            1: "Programme Prise de muscle :\n- Squat, Bench press, Deadlift\n- Séries 4x12\n- Repos 1 min entre les séries",
-            2: "Programme Endurance :\n- Course 45 min\n- Vélo 30 min\n- Étirements"
-        }
+    label = label_map.get(int(prediction), "inconnu")
+    exercices = recommandations.get(label, ["Programme non reconnu"])
 
-        result = programmes.get(pred_code, "Programme inconnu")
-        return templates.TemplateResponse("index.html", {"request": request, "result": result})
-    except Exception as e:
-        return templates.TemplateResponse("index.html", {"request": request, "result": f"Erreur : {str(e)}"})
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "programme": [f"🏋️‍♂️ [ {label} ]"],
+        "exercices": exercices,
+        "prediction": None
+    })
+
+
+@app.post("/predict_performance", response_class=HTMLResponse)
+async def predict_performance(
+    request: Request,
+    nb_squats: float = Form(...),
+    nb_bench_press: float = Form(...),
+    heures_sommeil: float = Form(...),
+    qualité_nutrition: float = Form(...)
+):
+    data = {
+        "nb_squats": nb_squats,
+        "nb_bench_press": nb_bench_press,
+        "heures_sommeil": heures_sommeil,
+        "qualité_nutrition": qualité_nutrition
+    }
+    df = pd.DataFrame([data])
+    prediction = model_perf.predict(df)[0]
+
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "prediction": round(prediction, 2),
+        "programme": None,
+        "exercices": []
+    })
