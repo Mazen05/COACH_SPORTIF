@@ -11,8 +11,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 # Charger les modèles
-model_perf = joblib.load("model_perf.pkl")
-model_reco = joblib.load("model_reco.pkl")
+model_perf = joblib.load("models/model_perf.pkl")
+model_reco = joblib.load("models/model_reco.pkl")
 
 @app.get("/predict_program", response_class=HTMLResponse)
 def form_page(request: Request):
